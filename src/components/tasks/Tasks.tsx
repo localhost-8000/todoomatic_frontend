@@ -1,15 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TaskCardContainer from './TaskCardContainer';
 
 import { DragDropContext } from "react-beautiful-dnd";
 import { initialData } from '../../initial_data';
+import { getBoard } from '../../utils/ApiCalls';
+import { Board } from '../../types/Board';
+import Modal from '../common/Modal';
+import UpdateBoardName from '../boards/UpdateBoardName';
+import { SettingsPowerRounded } from '@material-ui/icons';
+import CreateTask from './CreateTask';
 
 
-export default function Tasks() {
+export default function Tasks(props: {boardId: string}) {
+    const [showModal, setShowModal] = useState(false);
     const [state, setState] = React.useState(initialData);
+    const [boardData, setBoardData] = useState<Board>({
+        name: "",
+        description: ""
+    })
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data: Board = await getBoard(props.boardId);
+                setBoardData(data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchData();
+    }, [props.boardId]);
 
     const handleOnDragEnd = (result: any) => {
-        console.log("result: ", result);
         
         const { destination, source, draggableId } = result;
         if(!destination) return;
@@ -34,12 +56,14 @@ export default function Tasks() {
         return;
     }
 
+    const closeModal = () => setShowModal(false);
+
     return (
-        <div className="">
+        <div className="relative">
             <div className="flex justify-between items-center">
                 <div className="flex items-center">
-                    <h1 className="text-4xl font-bold text-dark-gray">Mobile System</h1>
-                    <div className="bg-light-purple rounded-md p-1 px-3 font-semibold text-sm ml-4">Edit</div>
+                    <h1 className="text-4xl font-bold text-dark-gray">{ boardData.name }</h1>
+                    <button type="button" onClick={_ => setShowModal(true)} className="bg-light-purple rounded-md p-1 px-3 font-semibold text-sm ml-4">Edit</button>
                 </div>
                 <div className="flex mt-6">
                     <img className="w-8 h-8 rounded-full border-2 border-dark-purple object-cover z-50" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTgwOTN8MHwxfHNlYXJjaHwyMXx8cHJvZmlsZXxlbnwwfHx8fDE2NTAxMDM0MjU&ixlib=rb-1.2.1&q=80&w=1080" alt="profile pic" />
@@ -49,14 +73,20 @@ export default function Tasks() {
                 </div>
             </div>
 
-            <div className="flex justify-between mt-10">
-                <div className="">Filter</div>
+            <div className="flex justify-between mt-14">
                 <div className="">
-                    <button type="button" className="border-2 border-dark-purple rounded-md px-8 py-2 text-dark-purple font-semibold text-lg hover:bg-dark-purple hover:text-white">New Task</button>
+                    <button type="button" className="border-2 border-dark-purple rounded-md px-8 py-2 text-dark-purple font-semibold text-lg hover:bg-dark-purple hover:text-white">Filter</button>
+                </div>
+                <div className="">
+                    <button type="button" onClick={_=> setShowModal(true)} className="border-2 border-dark-purple rounded-md px-8 py-2 text-dark-purple font-semibold text-lg hover:bg-dark-purple hover:text-white">New Task</button>
                 </div>
             </div>
 
-            <div className="flex flex-wrap justify-between mt-4">
+            <Modal open={showModal} onCloseCB={closeModal}>
+                <CreateTask closeModalCB={closeModal} />
+            </Modal>
+
+            <div className="flex flex-wrap justify-between mt-12">
                 <DragDropContext
                     onDragEnd={handleOnDragEnd}
                 >
@@ -68,6 +98,7 @@ export default function Tasks() {
                     })}
                 </DragDropContext>
             </div>
+
         </div>
     );
 }
