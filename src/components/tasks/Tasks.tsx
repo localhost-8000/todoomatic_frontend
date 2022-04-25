@@ -7,7 +7,6 @@ import { getBoard } from '../../utils/ApiCalls';
 import { Board } from '../../types/Board';
 import Modal from '../common/Modal';
 import UpdateBoardName from '../boards/UpdateBoardName';
-import { SettingsPowerRounded } from '@material-ui/icons';
 import CreateTask from './CreateTask';
 
 
@@ -75,10 +74,10 @@ export default function Tasks(props: {boardId: string}) {
 
             <div className="flex justify-between mt-14">
                 <div className="">
-                    <button type="button" className="border-2 border-dark-purple rounded-md px-8 py-2 text-dark-purple font-semibold text-lg hover:bg-dark-purple hover:text-white">Filter</button>
+                    <button type="button" onClick={_=> console.log("click")} className="border-2 border-dark-purple rounded-md px-8 py-2 text-dark-purple font-semibold text-lg hover:bg-dark-purple hover:text-white">Filter</button>
                 </div>
                 <div className="">
-                    <button type="button" onClick={_=> setShowModal(true)} className="border-2 border-dark-purple rounded-md px-8 py-2 text-dark-purple font-semibold text-lg hover:bg-dark-purple hover:text-white">New Task</button>
+                    <button type="button" onClick={_=> console.log("click")} className="border-2 border-dark-purple rounded-md px-8 py-2 text-dark-purple font-semibold text-lg hover:bg-dark-purple hover:text-white">New Task</button>
                 </div>
             </div>
 
