@@ -63,7 +63,7 @@ export default function Tasks(props: {boardId: string}) {
             <div className="flex justify-between items-center">
                 <div className="flex items-center">
                     <h1 className="text-4xl font-bold text-dark-gray">{ boardData.name }</h1>
-                    <button type="button" onClick={_ => setShowModal(true)} className="bg-light-purple rounded-md p-1 px-3 font-semibold text-sm ml-4">Edit</button>
+                    <button type="button" className="bg-light-purple rounded-md p-1 px-3 font-semibold text-sm ml-4">Edit</button>
                 </div>
                 <div className="flex mt-6">
                     <img className="w-8 h-8 rounded-full border-2 border-dark-purple object-cover z-50" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTgwOTN8MHwxfHNlYXJjaHwyMXx8cHJvZmlsZXxlbnwwfHx8fDE2NTAxMDM0MjU&ixlib=rb-1.2.1&q=80&w=1080" alt="profile pic" />
