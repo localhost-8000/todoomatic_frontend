@@ -1,5 +1,5 @@
-import { ActiveLink, Link } from 'raviger';
-import React, { useState } from 'react';
+import { ActiveLink } from 'raviger';
+import React from 'react';
 import { User } from '../../types/User';
 
 
@@ -10,7 +10,6 @@ const Menus = [
 ]
 
 export default function Sidebar(props: {user: User}) {
-    const [open, setOpen] = useState(true);
     
     return (
         <div className={
@@ -22,11 +21,11 @@ export default function Sidebar(props: {user: User}) {
                     className="cursor-pointer duration-500 w-12 h-12 rounded-full border-2 border-white object-cover"
                     src={`${props.user.photoURL}`} 
                 />
-                <h1 className={`text-white origin-left font-medium text-xl duration-300 ${!open && "hidden"}`}>{ props.user.name }</h1>
+                <h1 className={`text-white origin-left font-medium text-xl duration-300`}>{ props.user.name }</h1>
             </div>
 
             <div className="pt-6">
-                { Menus.map((menu, index) => (
+                { Menus.map(menu => (
                     <ActiveLink
                         key={menu.link}
                         href={menu.link}
