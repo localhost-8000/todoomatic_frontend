@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useRef } from 'react';
 
 export default function UpdateBoardName(props: {closeModalCB: () => void}) {
-    const [error, setError] = useState(false);
     const [boardName, setBoardName] = useState('');
     const cancelButtonRef = useRef(null);
 
@@ -20,7 +19,7 @@ export default function UpdateBoardName(props: {closeModalCB: () => void}) {
             <h2 className="text-2xl my-2 pl-5">Change Board Name</h2>
             <form onSubmit={handleSubmit} className="p-4">
                 <div className="mb-4">
-                    <label htmlFor="name" className={`${error ? "text-red-500" : ""}`}>Board Name</label>
+                    <label htmlFor="name">Board Name</label>
                     <input 
                         id="name"
                         type="text" 
