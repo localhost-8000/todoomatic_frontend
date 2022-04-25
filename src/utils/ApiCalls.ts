@@ -1,4 +1,5 @@
 import { Board } from "../types/Board";
+import { Task } from "../types/Task";
 import { User } from "../types/User";
 
 const API_BASE_URL = "https://todoomatic-backend.herokuapp.com/api/";
@@ -62,4 +63,12 @@ export const getBoards = () => {
 
 export const getBoard = (boardId: string) => {
     return request(`boards/${boardId}/`, "GET");
+}
+
+export const createTask = (boardId: string, taskData: Task) => {
+    return request(`boards/${boardId}/tasks/`, "POST", taskData);
+}
+
+export const getAllTasks = (boardId: string) => {
+    return request(`boards/${Number(boardId)}/tasks/`, "GET");
 }

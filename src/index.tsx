@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import { renderToString } from 'react-dom/server';
-import { resetServerContext } from 'react-beautiful-dnd';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';

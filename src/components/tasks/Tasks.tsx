@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import TaskCardContainer from './TaskCardContainer';
 
-import { DragDropContext } from "react-beautiful-dnd";
-import { initialData } from '../../initial_data';
-import { getBoard } from '../../utils/ApiCalls';
+import { getAllTasks, getBoard } from '../../utils/ApiCalls';
 import { Board } from '../../types/Board';
 import Modal from '../common/Modal';
-import UpdateBoardName from '../boards/UpdateBoardName';
 import CreateTask from './CreateTask';
+import { Task } from '../../types/Task';
 
 
 export default function Tasks(props: {boardId: string}) {
     const [showModal, setShowModal] = useState(false);
-    const [state, setState] = React.useState(initialData);
     const [boardData, setBoardData] = useState<Board>({
         name: "",
         description: ""
-    })
+    });
+    const [tasks, setTasks] = useState<Task[]>([]);
+
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const data: Board = await getBoard(props.boardId);
                 setBoardData(data);
+                const tasks: Task[] = await getAllTasks(props.boardId);
+                setTasks(tasks);
             } catch (error) {
                 console.log(error);
             }
@@ -30,30 +31,30 @@ export default function Tasks(props: {boardId: string}) {
         fetchData();
     }, [props.boardId]);
 
-    const handleOnDragEnd = (result: any) => {
+    // const handleOnDragEnd = (result: any) => {
         
-        const { destination, source, draggableId } = result;
-        if(!destination) return;
+    //     const { destination, source, draggableId } = result;
+    //     if(!destination) return;
 
-        if(destination.droppableId === source.droppableId && destination.index === source.index) return;
+    //     if(destination.droppableId === source.droppableId && destination.index === source.index) return;
 
-        const column = state.columns[source.droppableId];
-        const newTaskIds = Array.from(column.taskIds);
-        newTaskIds.splice(source.index, 1);
-        newTaskIds.splice(destination.index, 0, draggableId);
+    //     const column = state.columns[source.droppableId];
+    //     const newTaskIds = Array.from(column.taskIds);
+    //     newTaskIds.splice(source.index, 1);
+    //     newTaskIds.splice(destination.index, 0, draggableId);
 
-        setState({
-            ...state,
-            columns: {
-                ...state.columns,
-                [column.id]: {
-                    ...state.columns[column.id],
-                    taskIds: newTaskIds
-                }
-            }
-        });
-        return;
-    }
+    //     setState({
+    //         ...state,
+    //         columns: {
+    //             ...state.columns,
+    //             [column.id]: {
+    //                 ...state.columns[column.id],
+    //                 taskIds: newTaskIds
+    //             }
+    //         }
+    //     });
+    //     return;
+    // }
 
     const closeModal = () => setShowModal(false);
 
@@ -74,19 +75,22 @@ export default function Tasks(props: {boardId: string}) {
 
             <div className="flex justify-between mt-14">
                 <div className="">
-                    <button type="button" onClick={_=> console.log("click")} className="border-2 border-dark-purple rounded-md px-8 py-2 text-dark-purple font-semibold text-lg hover:bg-dark-purple hover:text-white">Filter</button>
+                    <button type="button" className="border-2 border-dark-purple rounded-md px-8 py-2 text-dark-purple font-semibold text-lg hover:bg-dark-purple hover:text-white">Filter</button>
                 </div>
                 <div className="">
-                    <button type="button" onClick={_=> console.log("click")} className="border-2 border-dark-purple rounded-md px-8 py-2 text-dark-purple font-semibold text-lg hover:bg-dark-purple hover:text-white">New Task</button>
+                    <button type="button" onClick={_=> setShowModal(true)} className="border-2 border-dark-purple rounded-md px-8 py-2 text-dark-purple font-semibold text-lg hover:bg-dark-purple hover:text-white">New Task</button>
                 </div>
             </div>
 
             <Modal open={showModal} onCloseCB={closeModal}>
-                <CreateTask closeModalCB={closeModal} />
+                <CreateTask boardId={props.boardId} closeModalCB={closeModal} />
             </Modal>
 
             <div className="flex flex-wrap justify-between mt-12">
-                <DragDropContext
+                <TaskCardContainer tasks={tasks.filter(t => t.status === "Pending")} columnTitle='Pending' />
+                <TaskCardContainer tasks={tasks.filter(t => t.status === "In Progress")} columnTitle='In Progress' />
+                <TaskCardContainer tasks={tasks.filter(t => t.status === "Done")} columnTitle='Done' />
+                {/* <DragDropContext
                     onDragEnd={handleOnDragEnd}
                 >
                     {state.columnOrder.map((columnId: string) => {
@@ -95,7 +99,7 @@ export default function Tasks(props: {boardId: string}) {
                         
                         return <TaskCardContainer key={column.id} column={column} tasks={tasks} />;
                     })}
-                </DragDropContext>
+                </DragDropContext> */}
             </div>
 
         </div>

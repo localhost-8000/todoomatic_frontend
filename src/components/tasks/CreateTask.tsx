@@ -1,9 +1,11 @@
+
 import React from 'react';
 import { useRef } from 'react';
 import { useState } from 'react';
 import { Task } from '../../types/Task';
+import { createTask } from '../../utils/ApiCalls';
 
-export default function CreateTask(props: {closeModalCB: () => void}) {
+export default function CreateTask(props: {boardId: string, closeModalCB: () => void}) {
     const [task, setTask] = useState<Task>({
         title: "",
         description: "",
@@ -14,7 +16,9 @@ export default function CreateTask(props: {closeModalCB: () => void}) {
     const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            
+            console.log("Creating task...");
+            await createTask(props.boardId, task);
+            props.closeModalCB();
         } catch (error) {
             console.log(error);
         }
@@ -25,7 +29,7 @@ export default function CreateTask(props: {closeModalCB: () => void}) {
             <h2 className="text-2xl my-2 pl-5">Create New Task</h2>
             <form onSubmit={handleSubmit} className="p-5">
                 <div className="mb-4">
-                    <label htmlFor="title" className={`${task.title ? "text-red-500" : ""}`}>Board Name</label>
+                    <label htmlFor="title">Task Name</label>
                     <input 
                         id="title"
                         type="text" 
@@ -38,10 +42,9 @@ export default function CreateTask(props: {closeModalCB: () => void}) {
                         })}
                         className="w-full p-2 my-2 border-2 border-gray-200 rounded-lg"
                     />
-                    {/* {errors.title && <p className="text-red-500">{ errors.title }</p> } */}
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="description" className={`${task.description ? "text-red-500" : ""}`}>Description</label>
+                    <label htmlFor="description">Description</label>
                     <input 
                         id="description"
                         type="text" 
@@ -53,7 +56,23 @@ export default function CreateTask(props: {closeModalCB: () => void}) {
                         })}
                         className="w-full p-2 my-2 border-2 border-gray-200 rounded-lg"
                     />
-                    {/* {errors.description && <p className="text-red-500">{ errors.description }</p> } */}
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="priority">Priority</label>
+                    <select 
+                        name="priority" 
+                        id="priority" 
+                        onChange={e => setTask({
+                            ...task,
+                            priority: e.target.value as Task['priority']
+                        })}
+                        className="w-full p-2 my-2 border-2 border-gray-200 rounded-lg" 
+                    >
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
                 </div>
 
                 <button type="submit" className="mt-2 w-full py-2 rounded-lg bg-purple-900 text-lg text-white font-semibold hover:bg-light-purple hover:text-dark-purple hover:shadow-lg">Create</button>
