@@ -3,6 +3,7 @@ import { Task } from "../types/Task";
 import { User } from "../types/User";
 
 const API_BASE_URL = "https://todoomatic-backend.herokuapp.com/api/";
+// const API_BASE_URL = "http://localhost:8000/api/";
 
 type RequestMethod = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -53,6 +54,10 @@ export const logIn = (userData: any) => {
     return request("auth-token/", "POST", userData);
 }
 
+export const getUserTasks = () => {
+    return request("users/tasks/", "GET");
+}
+
 export const createBoard = (boardData: Board) => {
     return request("boards/", "POST", boardData);
 }
@@ -65,10 +70,18 @@ export const getBoard = (boardId: string) => {
     return request(`boards/${boardId}/`, "GET");
 }
 
+export const updateBoard = (boardData: Board) => {
+    return request(`boards/${boardData.id}/`, "PUT", boardData);
+}
+
 export const createTask = (boardId: string, taskData: Task) => {
     return request(`boards/${boardId}/tasks/`, "POST", taskData);
 }
 
 export const getAllTasks = (boardId: string) => {
     return request(`boards/${Number(boardId)}/tasks/`, "GET");
+}
+
+export const updateTask = (taskData: Task) => {
+    return request(`boards/${Number(taskData.board?.id)}/tasks/${taskData.id}/`, "PUT", taskData);
 }

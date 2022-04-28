@@ -1,8 +1,9 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { UserTasks } from '../../types/Home';
 import { User } from '../../types/User';
-import { me } from '../../utils/ApiCalls';
+import { getUserTasks, me } from '../../utils/ApiCalls';
 import Task from './Task';
 import TaskCount from './TaskCount';
 
@@ -12,16 +13,24 @@ export default function Home() {
         username: ""
     });
 
+    const [userTasks, setUserTasks] = useState<UserTasks>({
+        pending: [],
+        progress: [],
+        done: []
+    });
+
     useEffect(() => {
-        const fetchUser = async() => {
+        const fetchUserAndTasks = async() => {
             try {
                 const data: User = await me();
                 setUser(data);
+                const userTaskData: UserTasks = await getUserTasks();
+                setUserTasks(userTaskData);
             } catch(error) {
                 console.log(error);
             }
         }
-        fetchUser();
+        fetchUserAndTasks();
     }, []);
 
 
@@ -31,12 +40,12 @@ export default function Home() {
             <h2 className="text-3xl text-dark-gray font-bold">Hello {user.name}</h2>
 
             <div className="flex justify-between mt-14">
-                <TaskCount />
-                <TaskCount />
-                <TaskCount />
+                <TaskCount taskCount={userTasks.pending.length} title="Pending" />
+                <TaskCount taskCount={userTasks.progress.length} title="In Progress" />
+                <TaskCount taskCount={userTasks.done.length} title="Completed" />
             </div>
 
-            <Task />
+            <Task userTasks={userTasks} />
         </div>
     );
 }

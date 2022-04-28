@@ -1,44 +1,35 @@
-
-import React from 'react';
-import { useRef } from 'react';
-import { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Task } from '../../types/Task';
-import { createTask } from '../../utils/ApiCalls';
+import { updateTask } from '../../utils/ApiCalls';
 
-export default function CreateTask(props: {boardId: string, closeModalCB: () => void, addTaskCB: (task: Task, add: boolean) => void}) {
-    const [task, setTask] = useState<Task>({
-        title: "",
-        description: "",
-        priority: "Low"
-    });
+export default function UpdateTask(props: {task: Task, closeModalCB: () => void, updateTaskCB: (task: Task, add: boolean) => void}) {
+    const [newTask, setNewTask] = useState<Task>(props.task);
     const cancelButtonRef = useRef(null);
-
+    
     const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            console.log("Creating task...");
-            const data: Task = await createTask(props.boardId, task);
-            props.addTaskCB(data, true);
+            const data: Task = await updateTask(newTask);
+            props.updateTaskCB(data, false);
             props.closeModalCB();
         } catch (error) {
             console.log(error);
         }
     }
-
     return (
         <div className="w-full max-w-lg divide-y divide-gray-200">
-            <h2 className="text-2xl my-2 pl-5">Create New Task</h2>
+            <h2 className="text-2xl my-2 pl-5">Update task</h2>
             <form onSubmit={handleSubmit} className="p-5">
                 <div className="mb-4">
-                    <label htmlFor="title">Task Name</label>
+                    <label htmlFor="title">Task title</label>
                     <input 
                         id="title"
                         type="text" 
                         name="title"
                         autoFocus
-                        value={task.title}
-                        onChange={e => setTask({
-                            ...task,
+                        value={newTask.title}
+                        onChange={e => setNewTask({
+                            ...newTask, 
                             title: e.target.value
                         })}
                         className="w-full p-2 my-2 border-2 border-gray-200 rounded-lg"
@@ -50,9 +41,9 @@ export default function CreateTask(props: {boardId: string, closeModalCB: () => 
                         id="description"
                         type="text" 
                         name="description"
-                        value={task.description}
-                        onChange={e => setTask({
-                            ...task,
+                        value={newTask.description}
+                        onChange={e => setNewTask({
+                            ...newTask,
                             description: e.target.value
                         })}
                         className="w-full p-2 my-2 border-2 border-gray-200 rounded-lg"
@@ -65,9 +56,9 @@ export default function CreateTask(props: {boardId: string, closeModalCB: () => 
                         name="status" 
                         id="status" 
                         title="task status"
-                        value={task.status}
-                        onChange={e => setTask({
-                            ...task,
+                        value={newTask.status}
+                        onChange={e => setNewTask({
+                            ...newTask,
                             status: e.target.value as Task['status']
                         })}
                         className="w-full p-2 my-2 border-2 border-gray-200 rounded-lg" 
@@ -78,15 +69,15 @@ export default function CreateTask(props: {boardId: string, closeModalCB: () => 
                         <option value="Cancelled">Cancelled</option>
                     </select>
                 </div>
-                
+
                 <div className="mb-4">
                     <label htmlFor="priority">Priority</label>
                     <select 
                         name="priority" 
                         id="priority" 
-                        value={task.priority}
-                        onChange={e => setTask({
-                            ...task,
+                        value={newTask.priority}
+                        onChange={e => setNewTask({
+                            ...newTask,
                             priority: e.target.value as Task['priority']
                         })}
                         className="w-full p-2 my-2 border-2 border-gray-200 rounded-lg" 
@@ -97,7 +88,7 @@ export default function CreateTask(props: {boardId: string, closeModalCB: () => 
                     </select>
                 </div>
 
-                <button type="submit" className="mt-2 w-full py-2 rounded-lg bg-purple-900 text-lg text-white font-semibold hover:bg-light-purple hover:text-dark-purple hover:shadow-lg">Create</button>
+                <button type="submit" className="mt-2 w-full py-2 rounded-lg bg-purple-900 text-lg text-white font-semibold hover:bg-light-purple hover:text-dark-purple hover:shadow-lg">Update</button>
                 <button
                     type="button"
                     ref={cancelButtonRef}

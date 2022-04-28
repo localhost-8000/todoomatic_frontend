@@ -6,11 +6,12 @@ import { Task } from '../../types/Task';
 interface TaskCardContainerProps {
     columnTitle: string;
     tasks: Task[];
+    addOrUpdateTaskCB: (task: Task, add: boolean) => void;
 }
 
 
 export default function TaskCardContainer(props: TaskCardContainerProps) {
-    const { columnTitle, tasks } = props;
+    const { columnTitle, tasks, addOrUpdateTaskCB } = props;
 
     return (
         <div className="max-w-[350px] w-full bg-gray-200 rounded-lg px-6 py-3 my-8 mr-4">
@@ -21,7 +22,7 @@ export default function TaskCardContainer(props: TaskCardContainerProps) {
             <p className="h-1 w-full bg-dark-purple my-3"></p>
             {tasks.length === 0 && <p className="text-center text-xl font-bold text-dark-purple">No tasks yet!</p>}
             {tasks.map((task: Task, index: number) => (
-                <TaskCard key={task.id} task={task} />
+                <TaskCard key={task.id} task={task} updateTaskCB={addOrUpdateTaskCB} />
             ))}
             {/* <Droppable droppableId={column.id} type='TASK'>
                 {(provided, snapshot) => (

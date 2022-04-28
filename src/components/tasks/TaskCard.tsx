@@ -1,19 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Task } from '../../types/Task';
+import Modal from '../common/Modal';
+import UpdateTask from './UpdateTask';
 
 interface TaskCardProps {
     task: Task;
+    updateTaskCB: (task: Task, add: boolean) => void;
 }
 
 export default function TaskCard(props: TaskCardProps) {
-    const { task} = props;
+    const { task, updateTaskCB } = props;
+    const [open, setOpen] = useState(false);
+
+    const closeModal = () => setOpen(false);
 
     return (
         <div className="w-full bg-gray-400 rounded-lg p-4 my-6">
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
                 <span className="px-3 py-0.5 bg-gray-300 rounded-lg text-sm font-semibold">{ task.priority }</span>
-                <span>...</span>
+                <span className="w-6 h-6 flex items-center justify-center flex-col cursor-pointer rounded-full hover:bg-gray-200" onClick={_=>setOpen(true)}>
+                    <div className="w-1 h-1 my-0.5 bg-black rounded-full"></div>
+                    <div className="w-1 h-1 my-0.5 bg-black rounded-full"></div>
+                    <div className="w-1 h-1 my-0.5 bg-black rounded-full"></div>
+                </span>
             </div>
+
+            <Modal open={open} onCloseCB={closeModal}>
+                <UpdateTask task={task} closeModalCB={closeModal} updateTaskCB={updateTaskCB} />
+            </Modal>
             <h3 className="mt-2 text-xl text-dark-purple font-semibold">{ task.title }</h3>
             <p className="mt-0.5 text-dark-gray">{task.description}</p>
             <div className="flex mt-6">
