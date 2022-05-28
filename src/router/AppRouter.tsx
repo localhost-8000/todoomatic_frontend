@@ -9,6 +9,7 @@ import Tasks from "../components/tasks/Tasks";
 
 import { me } from "../utils/ApiCalls";
 import { User } from "../types/User"
+import Todos from "../components/todos/Todos";
 
 
 const authenticated_routes = {
@@ -16,6 +17,7 @@ const authenticated_routes = {
     "/boards": () => <Boards />,
     "/boards/:boardId": ({boardId}: {boardId: string}) => <Tasks boardId={boardId}/>,
     "/boards/:boardId/tasks/:taskId": () => <Boards />,
+    "/todos": () => <Todos />
 };
 
 const unauthenticated_routes = {

@@ -6,7 +6,7 @@ import { User } from '../../types/User';
 const Menus = [
     { title: "Dashboard", link: "/" },
     { title: "Board", link: "/boards" },
-    { title: "To Do", link: "/todo" },
+    { title: "To Do", link: "/todos" },
 ]
 
 export default function Sidebar(props: {user: User}) {

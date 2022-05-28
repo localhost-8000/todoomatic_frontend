@@ -1,3 +1,4 @@
+import { FilterAltOutlined } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { Board } from '../../types/Board';
 import { getBoards } from '../../utils/ApiCalls';
@@ -33,7 +34,7 @@ export default function Boards() {
             <h1 className="text-4xl font-semibold text-dark-gray">My Boards</h1>
             <div className="flex justify-between mt-10">
                 <div className="">
-                    <button type="button" className="border-2 border-dark-purple rounded-md px-8 py-2 text-dark-purple font-semibold text-lg hover:bg-dark-purple hover:text-white">Filter</button>
+                    <button type="button" className="border-2 border-dark-purple rounded-md px-8 py-2 text-dark-purple font-semibold text-lg hover:bg-dark-purple hover:text-white"><FilterAltOutlined name='FilterAltOutlinedIcon' fontSize="small" color="inherit" /> Filter</button>
                 </div>
                 <div className="">
                     <button 

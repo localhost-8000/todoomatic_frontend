@@ -9,6 +9,13 @@ interface TaskCardContainerProps {
     addOrUpdateTaskCB: (task: Task, add: boolean) => void;
 }
 
+const comparatorFunction = (task1: Task, task2: Task) => {
+    if(task1.priority === "Low") return 1;
+    else if(task1.priority === "Medium" && (task2.priority === "Medium" || task2.priority === "High")) return 1;
+    else if(task1.priority === "High" && task2.priority === "High") return 1;
+    return -1;
+}
+
 
 export default function TaskCardContainer(props: TaskCardContainerProps) {
     const { columnTitle, tasks, addOrUpdateTaskCB } = props;
@@ -21,7 +28,7 @@ export default function TaskCardContainer(props: TaskCardContainerProps) {
             </div>
             <p className="h-1 w-full bg-dark-purple my-3"></p>
             {tasks.length === 0 && <p className="text-center text-xl font-bold text-dark-purple">No tasks yet!</p>}
-            {tasks.map((task: Task, index: number) => (
+            {tasks.sort(comparatorFunction).map((task: Task, index: number) => (
                 <TaskCard key={task.id} task={task} updateTaskCB={addOrUpdateTaskCB} />
             ))}
             {/* <Droppable droppableId={column.id} type='TASK'>
