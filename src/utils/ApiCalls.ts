@@ -2,8 +2,8 @@ import { Board } from "../types/Board";
 import { Task } from "../types/Task";
 import { User } from "../types/User";
 
-// const API_BASE_URL = "https://todoomatic-backend.herokuapp.com/api/";
-const API_BASE_URL = "http://localhost:8000/api/";
+const API_BASE_URL = "https://todoomatic-backend.herokuapp.com/api/";
+// const API_BASE_URL = "http://localhost:8000/api/";
 
 type RequestMethod = "GET" | "POST" | "PUT" | "DELETE";
 

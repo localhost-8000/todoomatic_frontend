@@ -1,6 +1,12 @@
 import React from 'react';
 
 export default function Topnav() {
+
+    const logoutUser = () => {
+        localStorage.removeItem("token");
+        window.location.href = "/auth";
+    }
+
     return (
         <div className="sticky top-0 h-16 w-full bg-dark-purple flex items-center justify-between z-100">
             <div className="flex">
@@ -17,7 +23,7 @@ export default function Topnav() {
 
             </div>
             <div className="h-full flex items-center mr-8">
-                <span className="text-white text-lg font-medium">Logout</span>
+                <button type="submit" onClick={logoutUser} className="text-white text-lg font-medium px-3 py-1 hover:bg-gray-100 hover:text-dark-purple rounded-md transition">Logout</button>
             </div>
         </div>    
     );

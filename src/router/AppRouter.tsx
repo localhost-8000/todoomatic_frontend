@@ -43,6 +43,6 @@ export default function AppRouter() {
     return (
         <AppContainer user={user}>
             {routes}
-        </AppContainer>
+        </AppContainer> 
     )
 }

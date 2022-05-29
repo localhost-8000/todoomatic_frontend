@@ -7,6 +7,7 @@ import { User } from './types/User';
 
 
 export default function AppContainer(props: { user: User, children: React.ReactNode }) {
+    
     return (
         props.user.username ? (
             <div className="flex flex-col">
