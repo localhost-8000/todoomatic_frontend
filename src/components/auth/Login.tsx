@@ -5,7 +5,6 @@ import { LoadingButton } from "@mui/lab";
 import RocketLaunch from '@mui/icons-material/RocketLaunch';
 import { Alert, AlertTitle } from '@mui/material';
 import { Error } from '../../types/Common';
-import { User } from '../../types/User';
 
 interface LoginProps {
     onChangeMethodCB: () => void;
